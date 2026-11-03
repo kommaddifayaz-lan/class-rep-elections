@@ -13,7 +13,7 @@ Update your own row at every check-in.
 |---|---|---|---|---|---|
 | Day 1 | Praneeth |  |  |  |  |
 | Day 1 | Kommaddi Fayaz | I will find the HTTP methods for the 10 endpoints and then I will start wrorking on main.py file in backend |  |  |  |
-| Day 1 | Ganga Siva Kumar Reddy |  |  |  |  |
+| Day 1 | Ganga Siva Kumar Reddy |Working on the Functions.py  |  |  |  |
 | Day 2 | Praneeth |  |  |  |  |
 | Day 2 | Kommaddi Fayaz |  |  |  |  |
 | Day 2 | Ganga Siva Kumar Reddy |  |  |  |  |
