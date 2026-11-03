@@ -1,7 +1,7 @@
 # Team 06 · Class-rep-Elections
 
 | Team | Partner 1 | Partner 2 | Partner 3 | Project | Branch |
-|---|---|---|---|---|
+|---|---|---|---|---|---|
 | 06 | Kommaddi Fayaz | Ganga Siva Kumar Reddy |Praneeth | [Class -Rep-Election](https://github.com/kommaddifayaz-lan/class-rep-elections) | `team-06-CR-Elections` |
 
 
