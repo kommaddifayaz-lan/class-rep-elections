@@ -18,6 +18,7 @@ app.add_middleware(
 def hello():
     return {"message": "Hello World"}
 
+
 # E1 - get - candidates with position and approved people only
 
 @app.get("/Candidates")
@@ -27,32 +28,37 @@ def get_candidates(position: str = None, approved_only: bool = False):
         raise HTTPException(status_code=400, detail="Invalid position")
     return functions.get_all_candidates(position=position, approved_only=approved_only)
 
+
 # E2 - get - candidate by id
 
 @app.get("/Candidates/{Candidate_id}")     
-def get_candidate(candidate_id: int):
+def get_candidate(candidate_id):
     candidate = functions.get_candidate_by_id(candidate_id)
     if candidate is None:
         raise HTTPException(status_code=404, detail="Candidate not found")
     return candidate
 
+
 # E3 - post - add candidates
-@app.post("/candidates")
-def add_candidate(roll_no: str, name: str, position: str, manifesto: str):
+
+@app.post("/Candidates")
+def add_candidate(roll_no, name, position, manifesto):
     allowed_positions = ["class_rep","sports_secretary","cultural_secretary","tech_secretary"]
     if position not in allowed_positions:
         raise HTTPException(status_code=400, detail="Invalid position")
-    # phase = functions.get_election_phase()
-    # if phase != "nomination":
-    #     raise HTTPException(status_code=400, detail="Nominations are not currently open")
+    phase = functions.get_current_phase()
+    if phase != "nomination":
+        raise HTTPException(status_code=400, detail="Nominations are not currently open")
     return functions.nominate_candidate(roll_no=roll_no, name=name, position=position, manifesto=manifesto)
 
+
 # E4 - PATCH - approve a candidate nomination
-@app.patch("/Candidates/{Candidate_id}/approve")   
-def approve_candidate(candidate_id: int):
-    # phase = functions.get_election_phase()
-    # if phase != "nomination":
-    #     raise HTTPException(status_code=400, detail="Nominations are not currently open")
+
+@app.patch("/Candidates/{candidate_id}/approve")   
+def approve_candidate(candidate_id):
+    phase = functions.get_current_phase()
+    if phase != "nomination":
+        raise HTTPException(status_code=400, detail="Nominations are not currently open")
     candidate = functions.get_candidate_by_id(candidate_id)
     if candidate["status"] != "nominated":
         raise HTTPException(status_code=400, detail="Candidate is not nominated")
@@ -62,13 +68,14 @@ def approve_candidate(candidate_id: int):
         raise HTTPException(status_code=404, detail="Candidate not found")
     return functions.approve_candidate(candidate_id=candidate_id)
 
+
 # E5 - PATCH - withdraw a candidate nomination
 
-@app.patch("/Candidates/withdraw")
-def withdraw_candidate(candidate_id: int, roll_no: str):
-    # phase = functions.get_election_phase()
-    # if phase != "nomination":
-    #     raise HTTPException(status_code=400, detail="Nominations are not currently open")
+@app.patch("/Candidates/{candidate_id}/withdraw")
+def withdraw_candidate(candidate_id, roll_no):
+    phase = functions.get_current_phase()
+    if phase != "nomination":
+        raise HTTPException(status_code=400, detail="Nominations are not currently open")
     if roll_no != functions.get_candidate_by_id(candidate_id)["roll_no"]:
         raise HTTPException(status_code=403, detail="You are not authorized to withdraw this candidate")
     candidate = functions.get_candidate_by_id(candidate_id)
@@ -80,45 +87,54 @@ def withdraw_candidate(candidate_id: int, roll_no: str):
         raise HTTPException(status_code=404, detail="Candidate not found")
     return functions.withdraw_candidate(roll_no=roll_no)
 
+
 # E6 - GET - the current election phase
-@app.get("/election/phase")
+
+@app.get("/Election/phase")
 def get_election_phase():
     return functions.get_current_phase()
 
-# E7 - PATCH - move to the next election phase
-@app.patch("/election/phase/next")
-def move_to_next_phase():
-    phase = functions.move_to_next_phase()
-    if phase == "closed":
-        raise HTTPException(status_code=400, detail="Election is already closed")
-    return phase
 
-# E8 - POST - cast a vote
-@app.post("/votes")
-def cast_vote(voter_roll:str, candidaate_id:int):
-    phase = functions.get_election_phase()
-    if phase != "voting":
-        raise HTTPException(status_code=400, detail="Voting is not currently open")
-    candidate = functions.get_candidate_by_id(candidaate_id)
-    if candidate is None:
-        raise HTTPException(status_code=404, detail="Candidate not found")  
-    if candidate["status"] != "approved":
-        raise HTTPException(status_code=400, detail="Candidate is not approved")
-    return functions.cast_vote(voter_roll=voter_roll, candidate_id=candidaate_id)
+# E7 - PATCH - move to the next election phase
+
+@app.patch("/Election/phase/next")
+def move_to_next_phase():
+    return functions.move_to_next_phase()
+
 
 # E9 - GET - get the positions alredy voted by a voter
-@app.get("/votes/{voter_roll}")
-def get_positions_voted(voter_roll:str):
-    phase = functions.get_election_phase()
+
+@app.get("/Votes/{voter_roll}")
+def get_positions_voted(voter_roll):
+    phase = functions.get_current_phase()
     if phase != "voting":
         raise HTTPException(status_code=400, detail="Voting is not currently open")
     return functions.get_positions_voted(voter_roll=voter_roll)
 
 
+# E8 - POST - cast a vote
+
+@app.post("/Votes")
+def cast_vote(voter_roll:str, candidate_id:int):   
+    phase = functions.get_current_phase()
+    if phase != "voting":
+        raise HTTPException(status_code=400, detail="Voting is not currently open")
+    candidate = functions.get_candidate_by_id(candidate_id)
+    if candidate is None:
+        raise HTTPException(status_code=404, detail="Candidate not found")  
+    if candidate["status"] != "approved":
+        raise HTTPException(status_code=400, detail="Candidate is not approved")
+    positions = functions.get_positions_voted(voter_roll)
+    if candidate["position"] in positions:
+        raise HTTPException(status_code=400, detail="You have already voted for this position")
+    return functions.cast_vote(voter_roll=voter_roll, candidate_id=candidate_id)
+
+
 # E10 - GET - get the results of the election
-@app.get("/results")
+
+@app.get("/Results")
 def get_results():
-    phase = functions.get_election_phase()
+    phase = functions.get_current_phase()
     if phase != "closed":
-        raise HTTPException(status_code=403, detail="Election is not closed yet")
+        raise HTTPException(status_code=400, detail="Results are not currently available")  
     return functions.get_results()
