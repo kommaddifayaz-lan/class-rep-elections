@@ -28,16 +28,16 @@ Fill in the method and path from your PRD's endpoint table. Status: ✅ done · 
 
 | # | Method + path | Built | Rules checked in /docs | Connected to React | Who |
 |---|---|---|---|---|---|
-| E1 |  | ⬜ | ⬜ | ⬜ |  |
-| E2 |  | ⬜ | ⬜ | ⬜ |  |
-| E3 |  | ⬜ | ⬜ | ⬜ |  |
-| E4 |  | ⬜ | ⬜ | ⬜ |  |
-| E5 |  | ⬜ | ⬜ | ⬜ |  |
-| E6 |  | ⬜ | ⬜ | ⬜ |  |
-| E7 |  | ⬜ | ⬜ | ⬜ |  |
-| E8 |  | ⬜ | ⬜ | ⬜ |  |
-| E9 |  | ⬜ | ⬜ | ⬜ |  |
-| E10 |  | ⬜ | ⬜ | ⬜ |  |
+| E1 | GET /candidates | ⬜ | ⬜ | ⬜ |  |
+| E2 | GET /candidates/{candidate_id} | ⬜ | ⬜ | ⬜ |  |
+| E3 | POST /candidates | ⬜ | ⬜ | ⬜ |  |
+| E4 | PATCH /candidates/{candidate_id} | ⬜ | ⬜ | ⬜ |  |
+| E5 | PATCH /candidates/{candidate_id}/withdraw | ⬜ | ⬜ | ⬜ |  |
+| E6 | GET /election/phase | ⬜ | ⬜ | ⬜ |  |
+| E7 | PATCH /election/phase | ⬜ | ⬜ | ⬜ |  |
+| E8 | POST /votes | ⬜ | ⬜ | ⬜ |  |
+| E9 | GET /votes/{voter_roll} | ⬜ | ⬜ | ⬜ |  |
+| E10 | GET /results  | ⬜ | ⬜ | ⬜ |  |
 
 
 ## 3. Frontend tracker
