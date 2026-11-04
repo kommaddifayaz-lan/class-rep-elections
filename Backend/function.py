@@ -31,3 +31,35 @@ class election(Base):
 
 Base.metadata.create_all(engine)
 
+
+def get_all_candidates():
+    session = Session(engine)
+    candidates_list = session.query(candidates).all()
+
+    filtered_candidates = []
+    for candidate in candidates_list:
+        candidate_dict = {
+            "id": candidate.id,
+            "roll_no": candidate.roll_no,
+            "name": candidate.name,
+            "position": candidate.position,
+            "mainfesto": candidate.mainfesto,
+            "status": candidate.status,
+            "nominated_on": candidate.nominated_on
+        }
+        filtered_candidates.append(candidate_dict)
+    session.commit()
+    session.close()
+    return filtered_candidates
+
+# getting candidate by candidate id
+def get_candidate_by_id(candidate_id):
+    session = Session(engine)
+    candidate = session.get(candidates, candidate_id)
+    session.commit()
+    session.close()
+    return candidate
+
+
+
+
