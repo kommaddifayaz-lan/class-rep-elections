@@ -65,7 +65,12 @@ def approve_candidate(candidate_id: int):
 # E5 - PATCH - withdraw a candidate nomination
 
 @app.patch("/candidates/{candidate_id}/withdraw")
-def withdraw_candidate(candidate_id: int):
+def withdraw_candidate(candidate_id: int, roll_no: str):
+    phase = function.get_election_phase()
+    if phase != "nomination":
+        raise HTTPException(status_code=400, detail="Nominations are not currently open")
+    if roll_no != function.get_candidate_by_id(candidate_id)["roll_no"]:
+        raise HTTPException(status_code=403, detail="You are not authorized to withdraw this candidate")
     candidate = function.get_candidate_by_id(candidate_id)
     if candidate["status"] != "nominated":
         raise HTTPException(status_code=400, detail="Candidate is not nominated")
