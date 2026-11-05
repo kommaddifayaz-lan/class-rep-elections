@@ -25,7 +25,7 @@ def hello():
 def get_candidates(position: str = None, approved_only: bool = False):
     allowed_positions = ["class_rep","sports_secretary","cultural_secretary","tech_secretary"]
     if position is not None and position not in allowed_positions:
-        raise HTTPException(status_code=400, detail="Invalid position")
+        raise HTTPException(status_code=422, detail="Invalid position")
     return functions.get_all_candidates(position=position, approved_only=approved_only)
 
 
@@ -45,7 +45,7 @@ def get_candidate(candidate_id):
 def add_candidate(roll_no, name, position, manifesto):
     allowed_positions = ["class_rep","sports_secretary","cultural_secretary","tech_secretary"]
     if position not in allowed_positions:
-        raise HTTPException(status_code=400, detail="Invalid position")
+        raise HTTPException(status_code=422, detail="Invalid position")
     phase = functions.get_current_phase()
     if phase != "nomination":
         raise HTTPException(status_code=400, detail="Nominations are not currently open")
