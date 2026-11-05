@@ -40,7 +40,7 @@ def get_candidate(candidate_id: int):
 @app.post("/candidates")
 def add_candidate(roll_no: str, name: str, position: str, manifesto: str):
     allowed_positions = ["class_rep","sports_secretary","cultural_secretary","tech_secretary"]
-    phase = functions.get_election_phase()
+    phase = functions.get_current_phase()
     if phase != "nomination":
         raise HTTPException(status_code=400, detail="Nominations are not currently open")
     if position not in allowed_positions:
@@ -50,7 +50,7 @@ def add_candidate(roll_no: str, name: str, position: str, manifesto: str):
 # E4 - PATCH - approve a candidate nomination
 @app.patch("/candidates/{candidate_id}/approve")   
 def approve_candidate(candidate_id: int):
-    phase = functions.get_election_phase()
+    phase = functions.get_current_phase()
     if phase != "nomination":
         raise HTTPException(status_code=400, detail="Nominations are not currently open")
     candidate = functions.get_candidate_by_id(candidate_id)
@@ -83,21 +83,21 @@ def withdraw_candidate(candidate_id: int):
 
 # E6 - GET - the current election phase
 @app.get("/election/phase")
-def get_election_phase():
-    return functions.get_election_phase()
+def get_current_phase():
+    return functions.get_current_phase()
 
 # E7 - PATCH - move to the next election phase
 @app.patch("/election/phase/next")
 def move_to_next_phase():
-    phase = functions.move_to_next_phase()
-    if phase is None:
+    current_phase = functions.move_to_next_phase()
+    if current_phase is None:
         raise HTTPException(status_code=400, detail="Election is already closed")
-    return phase
+    return current_phase
 
 # E8 - POST - cast a vote
 @app.post("/votes")
 def cast_vote(voter_roll:str, candidate_id:int):
-    phase = functions.get_election_phase()
+    phase = functions.get_current_phase()
     if phase != "voting":
         raise HTTPException(status_code=400, detail="Voting is not currently open")
     candidate = functions.get_candidate_by_id(candidate_id)
@@ -110,7 +110,7 @@ def cast_vote(voter_roll:str, candidate_id:int):
 # E9 - GET - get the positions alredy voted by a voter
 @app.get("/votes/{voter_roll}")
 def get_positions_voted(voter_roll:str):
-    phase = functions.get_election_phase()
+    phase = functions.get_current_phase()
     if phase != "voting":
         raise HTTPException(status_code=400, detail="Voting is not currently open")
     return functions.get_student_votes(voter_roll=voter_roll)
@@ -119,7 +119,7 @@ def get_positions_voted(voter_roll:str):
 # E10 - GET - get the results of the election
 @app.get("/results")
 def get_results():
-    phase = functions.get_election_phase()
+    phase = functions.get_current_phase()
     if phase != "closed":
         raise HTTPException(status_code=403, detail="Election is not closed yet")
     return functions.get_results()
