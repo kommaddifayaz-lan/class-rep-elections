@@ -32,7 +32,7 @@ Fill in the method and path from your PRD's endpoint table. Status: ✅ done · 
 | E2 | GET /candidates/{candidate_id} | ✅ | ✅ | ⬜ | Fayaz aand Praneeth |
 | E3 | POST /candidates | ✅ | ✅ | ⬜ | Fayaz and siva |
 | E4 | PATCH /candidates/{candidate_id} | ✅ | ✅ | ⬜ |  Fayaz aand Praneeth  |
-| E5 | PATCH /candidates/{candidate_id}/withdraw | ⬜ | ⬜ | ⬜ |  Fayaz aand Praneeth  |
+| E5 | PATCH /candidates/{candidate_id}/withdraw | ✅ | ✅ | ⬜ |  Fayaz aand Praneeth  |
 | E6 | GET /election/phase | ✅ | ✅ | ⬜ |  Fayaz aand Praneeth  |
 | E7 | PATCH /election/phase | ✅ | ✅ | ⬜ | Fayaz and siva |
 | E8 | POST /votes | ✅ | ✅ | ⬜ | Fayaz and siva |
