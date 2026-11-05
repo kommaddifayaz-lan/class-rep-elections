@@ -113,9 +113,9 @@ def approve_candidate(candidate_id:str):
     return response
 
 # withdraw a nomination.
-def withdraw_candidate(candidate_id:str):
+def withdraw_candidate(candidate_id:int,roll_no:str):
     session =Session(engine)
-    candidate = session.query(Candidates).filter(Candidates.id == candidate_id).first()
+    candidate = session.query(Candidates).filter(Candidates.id == candidate_id, Candidates.roll_no == roll_no).first()
     if candidate:
         if candidate.status == "nominated":
             candidate.status = "withdrawn"
@@ -145,12 +145,14 @@ def get_election_phase():
 def move_to_next_phase():
     session =Session(engine)
     current_phase = session.query(Election).first()
-    if current_phase:
-        if current_phase.phase == "nomination":
+    if current_phase is None:
+        session.close()
+        return None
+    elif current_phase.phase == "nomination":
             current_phase.phase = "voting"
-        elif current_phase.phase == "voting":
+    elif current_phase.phase == "voting":
             current_phase.phase = "result"
-        elif current_phase.phase == "result":
+    elif current_phase.phase == "result":
             current_phase.phase = "closed"
     else:
         current_phase= Election(phase="nomination")
@@ -164,24 +166,28 @@ def move_to_next_phase():
 def cast_vote(voter_roll:str, candidate_id:str):
     session =Session(engine)
     candidate = session.query(Candidates).filter(Candidates.id == candidate_id).first()
-    if candidate:
-        vote = votes(position=candidate.position, candidate_id=candidate.id, voter_roll=voter_roll)
-        if candidate and candidate.status == "approved":
-            student_votes = session.query(votes).filter(votes.voter_roll == voter_roll).all()
-            already_voted = True if any(vote.position == candidate.position for vote in student_votes) else False
-            if already_voted:
-                session.close()
-                return None
-        new_vote = votes(position=candidate.position, candidate_id=candidate.id, voter_roll=voter_roll)
-        session.add(new_vote)
-        session.commit()
-        response = {
-            "vote_id": new_vote.id,
-            "position": new_vote.position,
-            "candidate_id": new_vote.candidate_id,
-            "voter_roll": new_vote.voter_roll,
-            "voted_on": new_vote.voted_on
-        }
+    if candidate is None:
+        session.close()
+        return None
+    if candidate.status != "approved":
+        session.close()
+        return None
+
+    student_votes = session.query(votes).filter(votes.voter_roll == voter_roll).all()
+    already_voted = True if any(vote.position == candidate.position for vote in student_votes) else False
+    if already_voted:
+        session.close()
+        return None
+    new_vote = votes(position=candidate.position, candidate_id=candidate.id, voter_roll=voter_roll)
+    session.add(new_vote)
+    session.commit()
+    response = {
+        "vote_id": new_vote.id,
+        "position": new_vote.position,
+        "candidate_id": new_vote.candidate_id,
+        "voter_roll": new_vote.voter_roll,
+        "voted_on": new_vote.voted_on
+    }
     session.commit()
     session.close()
     return response
@@ -191,12 +197,12 @@ def cast_vote(voter_roll:str, candidate_id:str):
 def get_student_votes(roll_no):
     session = Session(engine)
     votes = session.query(votes).filter(votes.voter_roll == roll_no).all()
-    positions_voted = []
+    voted = []
     for vote in votes:
-        if vote.position not in positions_voted:
-         positions_voted.append(vote.position)
+        if vote.position not in voted:
+            voted.append(vote.position)
     session.close()
-    return positions_voted
+    return voted
 
 
 # Get the results: for each position, the votes for each candidate and the winner. 
