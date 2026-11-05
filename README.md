@@ -13,13 +13,13 @@ Update your own row at every check-in.
 |---|---|---|---|---|---|
 | Day 1 | Praneeth | first i will design the database and then work on the backend functions in Functions.py |  |  |  |
 | Day 1 | Kommaddi Fayaz | I will find the HTTP methods for the 10 endpoints and then I will start wrorking on main.py file in backend |  |  |  |
-| Day 1 | Ganga Siva Kumar Reddy |Working on the Functions.py  |  |  |  |
+| Day 1 | Ganga Siva Kumar Reddy |Working on the Functions.py  |one  |Remaining functions | yes  |
 | Day 2 | Praneeth |  |  |  |  |
 | Day 2 | Kommaddi Fayaz | 10 end points done 5 are working without error  |  |  |  |
-| Day 2 | Ganga Siva Kumar Reddy |  |  |  |  |
+| Day 2 | Ganga Siva Kumar Reddy | 4 functions | done | other 2 functions  | no |
 | Day 3 | Praneeth |  |  |  |  |
 | Day 3 | Kommaddi Fayaz | full backend main.py endpoints are done |  |  |  |
-| Day 3 | Ganga Siva Kumar Reddy |  |  |  |  |
+| Day 3 | Ganga Siva Kumar Reddy | 2 functions | done  | frontend  | yes |
 
 
 ## 2. Endpoint tracker
