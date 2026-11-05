@@ -147,10 +147,10 @@ def get_current_phase():
 def move_to_next_phase():
     session =Session(engine)
     current_phase = session.query(Election).first()
-    for phase in ["nomination", "voting", "closed", "results"]:
+    for current_phase in ["nomination", "voting", "closed", "results"]:
         if current_phase is None:
-            session.close()
-            return None
+            current_phase = Election(phase="nomination")
+            session.add(current_phase)
         elif current_phase.phase == "nomination":
             current_phase.phase = "voting"
         elif current_phase.phase == "voting":
@@ -160,7 +160,7 @@ def move_to_next_phase():
         else:
             current_phase= Election(phase="nomination")
             session.add(current_phase)
-            phase = current_phase.phase
+            current_phase = current_phase.phase
     session.commit()
     session.close()
     return current_phase
