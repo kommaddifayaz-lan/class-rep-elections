@@ -109,7 +109,7 @@ def get_positions_voted(voter_roll):
     phase = functions.get_current_phase()
     if phase != "voting":
         raise HTTPException(status_code=400, detail="Voting is not currently open")
-    return functions.get_positions_voted(voter_roll=voter_roll)
+    return functions.get_student_votes(voter_roll=voter_roll)
 
 
 # E8 - POST - cast a vote
