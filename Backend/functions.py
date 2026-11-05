@@ -92,8 +92,6 @@ def approve_candidate(candidate_id):
     return candidate_dict
 
 # Withdraw a nomination, with the candidate's roll number. 
-
-# Withdraw a nomination, with the candidate's roll number. 
 def withdraw_candidate(roll_no):
     session = Session(engine)
     candidates_list = session.query(Candidates).filter(Candidates.roll_no == roll_no).all()
