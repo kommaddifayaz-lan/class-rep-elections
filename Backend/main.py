@@ -33,4 +33,4 @@ def get_candidate(candidate_id: int):
     candidate = function.get_candidate_by_id(candidate_id)
     if candidate is None:
         raise HTTPException(status_code=404, detail="Candidate not found")
-    return candidate
+    return candidate 
