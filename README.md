@@ -15,10 +15,10 @@ Update your own row at every check-in.
 | Day 1 | Kommaddi Fayaz | I will find the HTTP methods for the 10 endpoints and then I will start wrorking on main.py file in backend |  |  |  |
 | Day 1 | Ganga Siva Kumar Reddy |Working on the Functions.py  |  |  |  |
 | Day 2 | Praneeth |  |  |  |  |
-| Day 2 | Kommaddi Fayaz |  |  |  |  |
+| Day 2 | Kommaddi Fayaz | 10 end points done 5 are working without error  |  |  |  |
 | Day 2 | Ganga Siva Kumar Reddy |  |  |  |  |
 | Day 3 | Praneeth |  |  |  |  |
-| Day 3 | Kommaddi Fayaz |  |  |  |  |
+| Day 3 | Kommaddi Fayaz | full backend main.py endpoints are done |  |  |  |
 | Day 3 | Ganga Siva Kumar Reddy |  |  |  |  |
 
 
@@ -28,16 +28,16 @@ Fill in the method and path from your PRD's endpoint table. Status: ✅ done · 
 
 | # | Method + path | Built | Rules checked in /docs | Connected to React | Who |
 |---|---|---|---|---|---|
-| E1 | GET /candidates | ⬜ | ⬜ | ⬜ |  |
-| E2 | GET /candidates/{candidate_id} | ⬜ | ⬜ | ⬜ |  |
-| E3 | POST /candidates | ⬜ | ⬜ | ⬜ |  |
-| E4 | PATCH /candidates/{candidate_id} | ⬜ | ⬜ | ⬜ |  |
-| E5 | PATCH /candidates/{candidate_id}/withdraw | ⬜ | ⬜ | ⬜ |  |
-| E6 | GET /election/phase | ⬜ | ⬜ | ⬜ |  |
-| E7 | PATCH /election/phase | ⬜ | ⬜ | ⬜ |  |
-| E8 | POST /votes | ⬜ | ⬜ | ⬜ |  |
-| E9 | GET /votes/{voter_roll} | ⬜ | ⬜ | ⬜ |  |
-| E10 | GET /results  | ⬜ | ⬜ | ⬜ |  |
+| E1 | GET /candidates | ✅ | ✅ | ⬜ | Fayaz and siva  |
+| E2 | GET /candidates/{candidate_id} | ✅ | ✅ | ⬜ | Fayaz aand Praneeth |
+| E3 | POST /candidates | ✅ | ✅ | ⬜ | Fayaz and siva |
+| E4 | PATCH /candidates/{candidate_id} | ✅ | ✅ | ⬜ |  Fayaz aand Praneeth  |
+| E5 | PATCH /candidates/{candidate_id}/withdraw | ⬜ | ⬜ | ⬜ |  Fayaz aand Praneeth  |
+| E6 | GET /election/phase | ✅ | ✅ | ⬜ |  Fayaz aand Praneeth  |
+| E7 | PATCH /election/phase | ✅ | ✅ | ⬜ | Fayaz and siva |
+| E8 | POST /votes | ✅ | ✅ | ⬜ | Fayaz and siva |
+| E9 | GET /votes/{voter_roll} | ✅ | ✅ | ⬜ | Fayaz and siva |
+| E10 | GET /results  | ✅ | ✅ | ⬜ | Fayaz and siva |
 
 
 ## 3. Frontend tracker
