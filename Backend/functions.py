@@ -56,11 +56,13 @@ def get_all_candidates():
 # getting candidate by candidate id
 def get_candidate_by_id(candidate_id):
     session = Session(engine)
+
     candidate = session.get(Candidates, candidate_id)
+    
     if candidate is None:
         session.close()
         return None
-    candidate_dict = {
+    response = {
         "id": candidate.id,
         "roll_no": candidate.roll_no,
         "name": candidate.name,
@@ -70,47 +72,46 @@ def get_candidate_by_id(candidate_id):
         "nominated_on": candidate.nominated_on
     }
     session.close()
-    return candidate_dict
+    return response
 
 
 # approving a nomination 
-def approve_candidate(candidate_id):
-    session = Session(engine)
-    candidate = session.get(Candidates, candidate_id)
-    candidate.status = "approved"
+def approve_candidate(candidate_id:str):
+    session =Session(engine)
+    candidate = session.query(Candidates).filter(Candidates.id == candidate_id).first()
+    if candidate is not None:
+        if candidate.status == "nominated":
+            candidate.status = "approved"
     session.commit()
-    candidate_dict = {
-        "id": candidate.id,
-        "roll_no": candidate.roll_no,
-        "name": candidate.name,
-        "position": candidate.position,
-        "mainfesto": candidate.mainfesto,
-        "status": candidate.status,
-        "nominated_on": candidate.nominated_on
-    }
-    session.close()
-    return candidate_dict
-
-# Withdraw a nomination, with the candidate's roll number. 
-def withdraw_candidate(roll_no):
-    session = Session(engine)
-    candidates_list = session.query(Candidates).filter(Candidates.roll_no == roll_no).all()
-    updated_candidates = []
-    for candidate in candidates_list:
-        candidate.status = "withdrawn"
-        session.commit()
-        candidate_dict = {
+    response = {
             "id": candidate.id,
             "roll_no": candidate.roll_no,
             "name": candidate.name,
-            "position": candidate.position,
-            "manifesto": candidate.mainfesto,
             "status": candidate.status,
-            "nominated_on": candidate.nominated_on
+            "position": candidate.position
         }
-        updated_candidates.append(candidate_dict)
     session.close()
-    return updated_candidates
+    return response
+
+# Withdraw a nomination. 
+def withdraw_candidate(candidate_id:int,roll_no:str):
+    session =Session(engine)
+    candidate = session.query(Candidates).filter(Candidates.id == candidate_id, Candidates.roll_no == roll_no).first()
+    if candidate is not None:
+        session.close()
+        return None
+    if candidate.status == "nominated" and candidate.status == "approved":
+        candidate.status = "withdrawn"
+    session.commit()
+    response = {
+        "id": candidate.id,
+        "roll_no": candidate.roll_no,
+        "name": candidate.name,
+        "status": candidate.status,
+        "position": candidate.position
+    }
+    session.close()
+    return response
 
 # Get the current phase. 
 def get_current_phase():
